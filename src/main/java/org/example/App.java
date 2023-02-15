@@ -29,10 +29,6 @@ public class App
                 2, "Добавить человека",
                 3, "Добавить/изменить данные",
                 4, "Выход")));
-        Menu mainM1 = new Menu();
-        mainM1.setButtons(new HashMap<>(Map.of(
-                1, "Печать выбранного человека",
-                2, "Печать всего списка людей")));
         Menu mainM31 = new Menu();
         mainM31.setButtons(new HashMap<>(Map.of(
                 1, "Ф.И.О.",
@@ -108,9 +104,9 @@ public class App
                                 Human.printNamesHuman(treeFamDem);
                                 String input2 = scanner.nextLine();
                                 Human mother = treeFamDem.getBigFamily().get(Integer.parseInt(input2) - 1);
-                                treeFamDem.getBigFamily().get(Integer.parseInt(input) - 1).setMother(mother);
-           // Делаеш ребенку мать автомотически ренку присваивается мать так же и отцу далее
                                 Human children = treeFamDem.getBigFamily().get(Integer.parseInt(input) - 1);
+                                children.setMother(mother);
+           // Присваиваем ребенку мать автомотически матери присваивается ребенок так же и отцу далее..
                                 mother.setChildren(children);
                             }
                              case 6 -> {
@@ -118,8 +114,8 @@ public class App
                                  Human.printNamesHuman(treeFamDem);
                                  String input2 = scanner.nextLine();
                                  Human father = treeFamDem.getBigFamily().get(Integer.parseInt(input2) - 1);
-                                 treeFamDem.getBigFamily().get(Integer.parseInt(input) - 1).setFather(father);
                                  Human children = treeFamDem.getBigFamily().get(Integer.parseInt(input) - 1);
+                                 children.setFather(father);
                                  father.setChildren(children);
 
                             }
@@ -128,15 +124,24 @@ public class App
                                 Human.printNamesHuman(treeFamDem);
                                 String input2 = scanner.nextLine();
                                 Human children = treeFamDem.getBigFamily().get(Integer.parseInt(input2) - 1);
-                                treeFamDem.getBigFamily().get(Integer.parseInt(input) - 1).setChildren(children);
-
+                                Human parent = treeFamDem.getBigFamily().get(Integer.parseInt(input) - 1);
+                                parent.setChildren(children);
+        // присваиваем человеку ребенка и если человек мужчина у ребенка присваевается отец , если человек женщина...
+                                if (parent.getGender() == Gender.male){
+                                    children.setFather(parent);
+                                } else {
+                                    children.setMother(parent);
+                                }
                             }
                             case 8 -> {
                                 messages.outputOfMessages(messages.getButtons(), new ArrayList<>(List.of(1)));
                                 Human.printNamesHuman(treeFamDem);
                                 String input2 = scanner.nextLine();
+
                                 Human brothersAndSisters = treeFamDem.getBigFamily().get(Integer.parseInt(input2) - 1);
-                                treeFamDem.getBigFamily().get(Integer.parseInt(input) - 1).setBrothersAndSisters(brothersAndSisters);
+                                Human human = treeFamDem.getBigFamily().get(Integer.parseInt(input) - 1);
+                                human.setBrothersAndSisters(brothersAndSisters);
+                                brothersAndSisters.setBrothersAndSisters(human);
                             }
                             case 9 -> flag3 = true;
                         }
