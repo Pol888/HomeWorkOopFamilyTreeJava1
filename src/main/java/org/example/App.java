@@ -109,6 +109,9 @@ public class App
                                 String input2 = scanner.nextLine();
                                 Human mother = treeFamDem.getBigFamily().get(Integer.parseInt(input2) - 1);
                                 treeFamDem.getBigFamily().get(Integer.parseInt(input) - 1).setMother(mother);
+           // Делаеш ребенку мать автомотически ренку присваивается мать так же и отцу далее
+                                Human children = treeFamDem.getBigFamily().get(Integer.parseInt(input) - 1);
+                                mother.setChildren(children);
                             }
                              case 6 -> {
                                  messages.outputOfMessages(messages.getButtons(), new ArrayList<>(List.of(1)));
@@ -116,13 +119,17 @@ public class App
                                  String input2 = scanner.nextLine();
                                  Human father = treeFamDem.getBigFamily().get(Integer.parseInt(input2) - 1);
                                  treeFamDem.getBigFamily().get(Integer.parseInt(input) - 1).setFather(father);
-                             }
+                                 Human children = treeFamDem.getBigFamily().get(Integer.parseInt(input) - 1);
+                                 father.setChildren(children);
+
+                            }
                             case 7 ->{
                                 messages.outputOfMessages(messages.getButtons(), new ArrayList<>(List.of(1)));
                                 Human.printNamesHuman(treeFamDem);
                                 String input2 = scanner.nextLine();
                                 Human children = treeFamDem.getBigFamily().get(Integer.parseInt(input2) - 1);
                                 treeFamDem.getBigFamily().get(Integer.parseInt(input) - 1).setChildren(children);
+
                             }
                             case 8 -> {
                                 messages.outputOfMessages(messages.getButtons(), new ArrayList<>(List.of(1)));
