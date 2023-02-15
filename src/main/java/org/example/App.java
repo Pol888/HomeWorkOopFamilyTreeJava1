@@ -69,8 +69,8 @@ public class App
                     messages.outputOfMessages(messages.getButtons(), new ArrayList<>(List.of(1)));
                     Human.printNamesHuman(treeFamDem); // вывод списка Human по именам
                     input = scanner.nextLine();
-                    boolean flag3 = false;
-                    while (!flag3) {
+                    boolean flag2 = false;
+                    while (!flag2) {
                         messages.outputOfMessages(messages.getButtons(), new ArrayList<>(List.of(2)));
                         Human.printHuman(treeFamDem, Integer.parseInt(input) - 1);
                         mainM31.outputOfMenuButtons(mainM31.getButtons());
@@ -143,7 +143,7 @@ public class App
                                 human.setBrothersAndSisters(brothersAndSisters);
                                 brothersAndSisters.setBrothersAndSisters(human);
                             }
-                            case 9 -> flag3 = true;
+                            case 9 -> flag2 = true;
                         }
                     }
                 }

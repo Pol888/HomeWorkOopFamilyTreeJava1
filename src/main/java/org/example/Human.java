@@ -10,6 +10,7 @@ public class Human {
     private LocalDate dateOfBirth;
     private LocalDate dateOfDeath;
     private Human mother;
+
     private Human father;
     private final ArrayList<Human> children;
     {
@@ -35,12 +36,14 @@ public class Human {
     }
 
     public Human(String name, Gender gender){
+
         this.name = name;
         this.gender = gender;
     }
 
     public Human(String name){
-        this.name = name;
+        this(name, null, null, null);
+        
     }
 
     public Human(){
