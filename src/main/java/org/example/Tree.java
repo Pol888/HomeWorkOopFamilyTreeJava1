@@ -4,7 +4,10 @@ import java.util.ArrayList;
 
 public class Tree {
     private String nameFamily;
-    private ArrayList<Human> bigFamily;
+    private final ArrayList<Human> bigFamily;
+    {
+        bigFamily = new ArrayList<>();
+    }
 
 
     public String getNameFamily() {
@@ -17,10 +20,6 @@ public class Tree {
 
     public ArrayList<Human> getBigFamily() {
         return bigFamily;
-    }
-
-    public void setBigFamily(ArrayList<Human> bigFamily) {
-        this.bigFamily = bigFamily;
     }
 
     public void addHuman(Human human){

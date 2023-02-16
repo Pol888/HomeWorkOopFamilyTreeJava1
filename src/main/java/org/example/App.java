@@ -1,28 +1,35 @@
 package org.example;
 
-import java.time.LocalDate;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.*;
 
 public class App
 {
-    public static void main( String[] args )
-    {
-        Tree treeFamDem = new Tree();   // База данных Human +++++++++++++++++++++++++++++++
-        treeFamDem.setNameFamily("Демидовичи");
+    public static void main( String[] args ) throws IOException {
 
-        treeFamDem.setBigFamily(new ArrayList<>());
+
+
+        Tree treeFamDem = new TreeHandlerTxt().read("File.txt");   // Загрузка с файла +++++++++++++++++++++++++
+
+        //Tree treeFamDem = new Tree();
+        //treeFamDem.setNameFamily("Демидовичи");
         //--------------------------------------------------------------------------------------------------------------
-        treeFamDem.addHuman(new Human("Демидович Павел Анатольевич", Gender.male, LocalDate.of(1988, 8, 23)));
-        treeFamDem.addHuman(new Human("Демидович Агата Павловна", Gender.female, LocalDate.of(2013, 9, 16)));
-        treeFamDem.addHuman(new Human("Демидович Анатолий Афанасьевич", Gender.male, LocalDate.of(1955, 9, 28)));
-        treeFamDem.addHuman(new Human("Демидович Галина Ивановна", Gender.female, LocalDate.of(1950, 9, 24)));
-        treeFamDem.addHuman(new Human("Мордвинцева Александра Павловна", Gender.female, LocalDate.of(1925, 5, 1), LocalDate.of(1959, 3, 3)));
-        treeFamDem.addHuman(new Human("Гулак Иван Васильевич", Gender.male));
-        treeFamDem.addHuman(new Human("Демидович Анастасия Герасимовна", Gender.female));
-        treeFamDem.addHuman(new Human("Демидович Афанасий Гаврилович", Gender.male));
-        treeFamDem.addHuman(new Human("Балашенко Феодосия Ивановна"));
-        // Кнопки:
+        //treeFamDem.addHuman(new Human("Демидович Павел Анатольевич", Gender.male, LocalDate.of(1988, 8, 23)));
+        //treeFamDem.addHuman(new Human("Демидович Агата Павловна", Gender.female, LocalDate.of(2013, 9, 16)));
+        //treeFamDem.addHuman(new Human("Демидович Анатолий Афанасьевич", Gender.male, LocalDate.of(1955, 9, 28)));
+        //treeFamDem.addHuman(new Human("Демидович Галина Ивановна", Gender.female, LocalDate.of(1950, 9, 24)));
+        //treeFamDem.addHuman(new Human("Мордвинцева Александра Павловна", Gender.female, LocalDate.of(1925, 5, 1), LocalDate.of(1959, 3, 3)));
+        //treeFamDem.addHuman(new Human("Гулак Иван Васильевич", Gender.male));
+        //treeFamDem.addHuman(new Human("Демидович Анастасия Герасимовна", Gender.female));
+        //treeFamDem.addHuman(new Human("Демидович Афанасий Гаврилович", Gender.male));
+        //treeFamDem.addHuman(new Human("Балашенко Феодосия Ивановна"));
+        //treeFamDem.getBigFamily().get(0).getChildren().add(treeFamDem.getBigFamily().get(1));
+        //treeFamDem.getBigFamily().get(1).setFather(treeFamDem.getBigFamily().get(0));
+        //treeFamDem.getBigFamily().get(0).setMother(treeFamDem.getBigFamily().get(3));
+        //treeFamDem.getBigFamily().get(0).setFather(treeFamDem.getBigFamily().get(2));
+
+        //Кнопки:
         Menu mainM = new Menu();
         mainM.setButtons(new HashMap<>(Map.of(
                 1, "Вывод на экран",
@@ -48,6 +55,8 @@ public class App
                 3, "***Введите Ф.И.О***",
                 5, "Ведите дату формате -день%месяц%год-")));
         //------------------------------------------------------------------------------------
+
+
         Scanner scanner = new Scanner(System.in);
         boolean flag = false;
         while (!flag) {
@@ -150,6 +159,7 @@ public class App
             case "4" -> flag = true;
             }
         }
+        new TreeHandlerTxt().write(treeFamDem);  // сохранение
         scanner.close();
     }
 }
