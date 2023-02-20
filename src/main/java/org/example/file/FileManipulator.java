@@ -1,11 +1,13 @@
-package org.example;
+package org.example.file;
+
+
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public abstract class FileManipulator implements FileOperable{
+public abstract class FileManipulator implements FileOperable {
 
 
     protected LocalDate localDateInStr(String date){

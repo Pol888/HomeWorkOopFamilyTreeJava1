@@ -4,12 +4,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+
 public class Human {
     static Integer counter;
     static {
         counter = 1;
     }
-    private String id;
+    private final String id;
     //-----------------------------
 
     private String name;
@@ -26,45 +27,47 @@ public class Human {
     private final ArrayList<Human> brothersAndSisters;
     {
         brothersAndSisters = new ArrayList<>();
+        
+
     }
 
 
-    public Human(String name, Gender gender, LocalDate dateOfBirth, LocalDate dateOfDeath) {
+
+
+    public Human(String name, Gender gender, LocalDate dateOfBirth, LocalDate dateOfDeath, String id, Tree tree) {
         this.name = name;
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
         this.dateOfDeath = dateOfDeath;
-        this.id = "id:" + counter;
-        counter++;
+        if (id.equals("")){
+            while (true) {
+                boolean flag = false;
+                for (int i = 0; i < tree.getExistingIds().size(); i++) {
+                    if (Integer.parseInt(new ArrayList<>(Arrays.asList(tree.getExistingIds().get(i).split(":"))).get(1)) == counter) {
+                        flag = true;
+                    }
+                }
+                if (flag) {
+                    counter++;
+                } else {
+                    this.id = "id:" + counter;
+                    counter = 1;
+                    break;
+                }
+            }
+        } else {
+            this.id = id;
+        }
     }
 
-    public Human(String name, Gender gender, LocalDate dateOfBirth){
-        this.name = name;
-        this.gender = gender;
-        this.dateOfBirth = dateOfBirth;
-        this.id = "id:" + counter;
-        counter++;
+
+    public Human(String name, Tree tree){
+        this(name, null, LocalDate.now(), null, "", tree);
     }
 
-    public Human(String name, Gender gender){
-        this.name = name;
-        this.gender = gender;
-        this.id = "id:" + counter;
-        counter++;
-    }
-
-    public Human(String name){
-
-        this(name, null, null, null);
-        this.id = "id:" + counter;
-        counter++;
-    }
-
-    public Human(){
-    this.id = "id:" + counter;
-    counter++;
-    }
     //---------------------------------------------------------
+
+
 
 
     public String getId() {
@@ -137,8 +140,10 @@ public class Human {
     }
     //----------------------------------------------------------------------------------
     public static void printNamesHuman(Tree tree) {  // Печать имен Human
-        for (int i = 0; i < tree.getBigFamily().size(); i++) {
-            System.out.printf("%d - %s%n", i + 1, tree.getBigFamily().get(i).getName());
+        int i = 1;
+        for (Human human : tree) {
+            System.out.printf("%d - %s%n", i, human.getName());
+            i++;
         }
     }
     public static void printHuman(Tree tree, int indexH) {  // Печать Human
@@ -149,9 +154,8 @@ public class Human {
 
     public static LocalDate creatingADate(String sDate){  // создание даты из строки
         ArrayList<String> dateL = new ArrayList<>(Arrays.asList(sDate.split(" ")));
-        LocalDate date = LocalDate.of(Integer.parseInt(dateL.get(2)),
+        return LocalDate.of(Integer.parseInt(dateL.get(2)),
                 Integer.parseInt(dateL.get(1)), Integer.parseInt(dateL.get(0)));
-        return date;
     }
 
     public static void superPrintHumanHC(Tree tree, int indexH) {  // Печать Human центральной фигуры
@@ -198,4 +202,6 @@ public class Human {
             System.out.println();
         }
     }
+
+
 }

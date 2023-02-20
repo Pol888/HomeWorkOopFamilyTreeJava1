@@ -1,4 +1,9 @@
-package org.example;
+package org.example.file;
+
+import org.example.Gender;
+import org.example.Human;
+import org.example.Tree;
+
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,12 +16,13 @@ import java.util.Scanner;
 public class TreeHandlerTxt extends FileManipulator {
     @Override
     public void write(Tree tree) throws IOException {
+        System.out.println("запись...");
         File file = new File("File.txt");
         FileWriter fW = new FileWriter(file, false);
         fW.write(String.format("starVer888Tree %s\n", tree.getNameFamily()));
         for (int i = 0; i < tree.getBigFamily().size(); i++) {
             Human hm = tree.getBigFamily().get(i);
-            fW.append(String.format("HumanVer888,%s,%s,%s,%s\n", hm.getName(), hm.getGender(), hm.getDateOfBirth(), hm.getDateOfDeath()));
+            fW.append(String.format("HumanVer888,%s,%s,%s,%s,%s\n", hm.getName(), hm.getGender(), hm.getDateOfBirth(), hm.getDateOfDeath(), hm.getId()));
         }
         for (int i = 0; i < tree.getBigFamily().size(); i++) {
             Human hm = tree.getBigFamily().get(i);
@@ -52,7 +58,7 @@ public class TreeHandlerTxt extends FileManipulator {
         }
     }
         fW.close();
-        System.out.println("запись...");
+
 }
 
 
@@ -71,11 +77,11 @@ public class TreeHandlerTxt extends FileManipulator {
             }else if (new ArrayList<>(Arrays.asList(str.split(","))).get(0).equals("HumanVer888")){
                 ArrayList<String> list = new ArrayList<>(Arrays.asList(str.split(",")));
                 if (list.get(2).equals("male")){
-                    tree.addHuman(new Human(list.get(1), Gender.male, localDateInStr(list.get(3)), localDateInStr(list.get(4))));
+                    tree.addHuman(new Human(list.get(1), Gender.male, localDateInStr(list.get(3)), localDateInStr(list.get(4)), list.get(5), tree ));
                 } else if(list.get(2).equals("female")){
-                    tree.addHuman(new Human(list.get(1), Gender.female, localDateInStr(list.get(3)), localDateInStr(list.get(4))));
+                    tree.addHuman(new Human(list.get(1), Gender.female, localDateInStr(list.get(3)), localDateInStr(list.get(4)), list.get(5), tree));
                 } else {
-                    tree.addHuman(new Human(list.get(1), null, localDateInStr(list.get(3)), localDateInStr(list.get(4))));
+                    tree.addHuman(new Human(list.get(1), null, localDateInStr(list.get(3)), localDateInStr(list.get(4)), list.get(5), tree));
                 }
             }else if (new ArrayList<>(Arrays.asList(str.split(","))).get(0).equals("CommunicationsVer888")){   ////////--------------=========++++++++
                 ArrayList<String> listStr = new ArrayList<>(Arrays.asList(str.split(",")));

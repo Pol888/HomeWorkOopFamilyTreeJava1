@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.comparator.ComparatorFunction;
+import org.example.file.TreeHandlerTxt;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.*;
@@ -11,6 +13,15 @@ public class App
 
 
         Tree treeFamDem = new TreeHandlerTxt().read("File.txt");   // Загрузка с файла +++++++++++++++++++++++++
+
+        treeFamDem.sortTree(ComparatorFunction.dateOfBirth);// сортировка по имени или id или dateOfBirth c помощью enum
+                                                                                   // после сортировки связи не путаются
+        for (Human human:treeFamDem) {
+
+        }
+        // функция printNamesHuman в Human, реализована с помощью for-ich с деревом..
+
+
 
         //Tree treeFamDem = new Tree();
         //treeFamDem.setNameFamily("Демидовичи");
@@ -29,13 +40,16 @@ public class App
         //treeFamDem.getBigFamily().get(0).setMother(treeFamDem.getBigFamily().get(3));
         //treeFamDem.getBigFamily().get(0).setFather(treeFamDem.getBigFamily().get(2));
 
+
         //Кнопки:
         Menu mainM = new Menu();
         mainM.setButtons(new HashMap<>(Map.of(
                 1, "Вывод на экран",
                 2, "Добавить человека",
                 3, "Добавить/изменить данные",
-                4, "Выход")));
+                5, "Выход",
+                4, "Удалить человека из списка")));
+
         Menu mainM31 = new Menu();
         mainM31.setButtons(new HashMap<>(Map.of(
                 1, "Ф.И.О.",
@@ -64,22 +78,29 @@ public class App
             String input = scanner.nextLine();
             switch (input) {
                 case "1" -> {           // Печать
+                    Menu.clear();
                     messages.outputOfMessages(messages.getButtons(), new ArrayList<>(List.of(1)));
                     Human.printNamesHuman(treeFamDem);
                     input = scanner.nextLine();
+                    Menu.clear();
                     Human.superPrintHumanHC(treeFamDem, Integer.parseInt(input) - 1);
+
                 }
                 case "2" ->  {
+                    Menu.clear();
                     messages.outputOfMessages(messages.getButtons(), new ArrayList<>(List.of(3)));
                     String name = scanner.nextLine();                      // Добавить человека
-                    treeFamDem.addHuman(new Human(name));
+                    treeFamDem.addHuman(new Human(name, treeFamDem));
+                    Menu.clear();
                 }
                 case "3" -> {    // Изменить данные человека
+                    Menu.clear();
                     messages.outputOfMessages(messages.getButtons(), new ArrayList<>(List.of(1)));
                     Human.printNamesHuman(treeFamDem); // вывод списка Human по именам
                     input = scanner.nextLine();
                     boolean flag2 = false;
                     while (!flag2) {
+                        Menu.clear();
                         messages.outputOfMessages(messages.getButtons(), new ArrayList<>(List.of(2)));
                         Human.printHuman(treeFamDem, Integer.parseInt(input) - 1);
                         mainM31.outputOfMenuButtons(mainM31.getButtons());
@@ -87,6 +108,7 @@ public class App
                             case 1 -> {
                                 messages.outputOfMessages(messages.getButtons(), new ArrayList<>(List.of(3)));
                                 treeFamDem.getBigFamily().get(Integer.parseInt(input) - 1).setName(scanner.nextLine());
+                                Menu.clear();
                             }
                             case 2 -> {
                                 System.out.println("1 - Мужчина");
@@ -97,16 +119,19 @@ public class App
                                 } else{
                                     treeFamDem.getBigFamily().get(Integer.parseInt(input) - 1).setGender(Gender.female);
                                 }
+                                Menu.clear();
                             }
                             case 3 -> {
                                 messages.outputOfMessages(messages.getButtons(), new ArrayList<>(List.of(5)));
                                 String input2 = scanner.nextLine();
                                 treeFamDem.getBigFamily().get(Integer.parseInt(input) - 1).setDateOfBirth(Human.creatingADate(input2));
+                                Menu.clear();
                             }
                             case 4 -> {
                                 messages.outputOfMessages(messages.getButtons(), new ArrayList<>(List.of(5)));
                                 String input2 = scanner.nextLine();
                                 treeFamDem.getBigFamily().get(Integer.parseInt(input) - 1).setDateOfDeath(Human.creatingADate(input2));
+                                Menu.clear();
                             }
                             case 5 -> {
                                 messages.outputOfMessages(messages.getButtons(), new ArrayList<>(List.of(1)));
@@ -117,6 +142,7 @@ public class App
                                 children.setMother(mother);
            // Присваиваем ребенку мать автомотически матери присваивается ребенок так же и отцу далее..
                                 mother.setChildren(children);
+                                Menu.clear();
                             }
                              case 6 -> {
                                  messages.outputOfMessages(messages.getButtons(), new ArrayList<>(List.of(1)));
@@ -126,7 +152,7 @@ public class App
                                  Human children = treeFamDem.getBigFamily().get(Integer.parseInt(input) - 1);
                                  children.setFather(father);
                                  father.setChildren(children);
-
+                                 Menu.clear();
                             }
                             case 7 ->{
                                 messages.outputOfMessages(messages.getButtons(), new ArrayList<>(List.of(1)));
@@ -141,6 +167,7 @@ public class App
                                 } else {
                                     children.setMother(parent);
                                 }
+                                Menu.clear();
                             }
                             case 8 -> {
                                 messages.outputOfMessages(messages.getButtons(), new ArrayList<>(List.of(1)));
@@ -151,14 +178,27 @@ public class App
                                 Human human = treeFamDem.getBigFamily().get(Integer.parseInt(input) - 1);
                                 human.setBrothersAndSisters(brothersAndSisters);
                                 brothersAndSisters.setBrothersAndSisters(human);
+                                Menu.clear();
                             }
-                            case 9 -> flag2 = true;
+                            case 9 -> {
+                                flag2 = true;
+                                Menu.clear();
+                            }
                         }
                     }
                 }
-            case "4" -> flag = true;
+                case "4" -> {
+                    Menu.clear();
+                    messages.outputOfMessages(messages.getButtons(), new ArrayList<>(List.of(1)));
+                    Human.printNamesHuman(treeFamDem);
+                    input = scanner.nextLine();
+                    Menu.clear();
+                    treeFamDem.removingAPerson(treeFamDem.getBigFamily(), Integer.parseInt(input) - 1);
+                }
+            case "5" -> flag = true;
             }
         }
+        treeFamDem.sortTree(ComparatorFunction.id);    // перед записью сортировка по id :-)
         new TreeHandlerTxt().write(treeFamDem);  // сохранение
         scanner.close();
     }

@@ -1,4 +1,6 @@
-package org.example;
+package org.example.file;
+
+import org.example.Tree;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
