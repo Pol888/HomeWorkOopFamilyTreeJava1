@@ -1,20 +1,17 @@
 package org.example;
 
 import org.example.Iterator.HumanIterator;
-import org.example.comparator.ComparatorFunction;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Iterator;
 
-public class Tree  implements Iterable<Human>{
-    private final ArrayList <String> existingIds;  // хранит существующие id Human (для того, чтобы при загрузке файла
-    {
-        existingIds = new ArrayList<>();
+public class Tree <T extends Human> implements Iterable<T>{
+    private final ArrayList <String> existingIds;  // хранит существующие id Human после загрузки с файла, для того, чтобы
+                                                      //при добавлении или удалении человека, id назначались последовательно.
+    {                                                 // Уадлен id 6, следующий созданный станет 6-стым.
+        existingIds = new ArrayList<String>();
     }
     private String nameFamily;
-    private final ArrayList<Human> bigFamily;
+    private final ArrayList<T> bigFamily;
     {
         bigFamily = new ArrayList<>();
     }
@@ -28,7 +25,7 @@ public class Tree  implements Iterable<Human>{
         this.nameFamily = nameFamily;
     }
 
-    public ArrayList<Human> getBigFamily() {
+    public ArrayList<T> getBigFamily() {
         return bigFamily;
     }
 
@@ -36,7 +33,7 @@ public class Tree  implements Iterable<Human>{
         return existingIds;
     }
 
-    public void addHuman(Human human){
+    public void addHuman(T human){
         this.bigFamily.add(human);
         this.existingIds.add(bigFamily.get(bigFamily.size() - 1).getId());
     }
@@ -45,47 +42,65 @@ public class Tree  implements Iterable<Human>{
         bigFamily.remove(index);
     }
 
-
-
-    public void sortTree(ComparatorFunction function){
-        if (function.equals(ComparatorFunction.name)){
-            bigFamily.sort(new Comparator<Human>() {
-                @Override
-                public int compare(Human o1, Human o2) {
-                    return o1.getName().compareTo(o2.getName());
-                }
-            });
-        }else if (function.equals(ComparatorFunction.id)){
-            bigFamily.sort(new Comparator<Human>() {
-                @Override
-                public int compare(Human o1, Human o2) {
-                    int a = Integer.parseInt(new ArrayList<>(Arrays.asList(o1.getId().split(":"))).get(1));
-                    int b = Integer.parseInt(new ArrayList<>(Arrays.asList(o2.getId().split(":"))).get(1));
-                    return Integer.compare(a, b);
-
-                            //o1.getId().compareTo(o2.getId());
-                }
-            });
-        } else if (function.equals(ComparatorFunction.dateOfBirth)){
-            bigFamily.sort(new Comparator<Human>() {
-                @Override
-                public int compare(Human o1, Human o2) {
-                    return o1.getDateOfBirth().compareTo(o2.getDateOfBirth());
-                }
-            });
+    public  void printNamesHuman(ArrayList<T> bigFamily) {  // Печать имен Human
+        int i = 1;
+        for (T human : bigFamily) {
+            System.out.printf("%d - %s%n", i, human.getName());
+            i++;
         }
-
-
-        //else if (function.equals(ComparatorFunction.dateOfBirth)){
-            //    bigFamily.sort(Comparator.comparing(Human::getDateOfBirth));
-            //}
-         //this.bigFamily.sort(((o1, o2) -> o1.getName().compareTo(o2.getName())));
-        //arrayList.sort(Comparator.comparing(Human::getName).thenComparing(Human::getName));
     }
 
+    public void printHuman(ArrayList<T> bigFamily, int indexH) {  // Печать Human
+        System.out.printf("%s, %s, %s, %s%n", bigFamily.get(indexH).getName(), bigFamily.get(indexH).getGender(),
+                bigFamily.get(indexH).getDateOfBirth(), bigFamily.get(indexH).getDateOfDeath());
+        System.out.println();
+    }
+
+    public  void superPrintHumanHC(ArrayList<T> bigFamily, int indexH) {  // Печать Human центральной фигуры
+        System.out.print(String.format("Ф.И.О.: %s, Пол: %s, Дата рождения: %s",
+                bigFamily.get(indexH).getName(),
+                bigFamily.get(indexH).getGender(),
+                bigFamily.get(indexH).getDateOfBirth()));
+        System.out.print(", ");
+        if (bigFamily.get(indexH).getDateOfDeath() == null) {
+            System.out.print("");
+        } else {
+            System.out.print(String.format("Дата смерти: %s, ", bigFamily.get(indexH).getDateOfDeath()));
+        }
+        System.out.println(bigFamily.get(indexH).getId());
+        if(bigFamily.get(indexH).getMother() == null){
+            System.out.println("Мама: не определенна");
+        }else {
+            System.out.println(String.format("Мама: %s", bigFamily.get(indexH).getMother().getName()));
+        }
+        if(bigFamily.get(indexH).getFather() == null){
+            System.out.println("Папа: не определен");
+        }else {
+            System.out.println(String.format("Папа: %s", bigFamily.get(indexH).getFather().getName()));
+        }
+        if (bigFamily.get(indexH).getChildren().size() > 0){
+            for (int i = 0; i < bigFamily.get(indexH).getChildren().size(); i++) {
+                System.out.println(String.format("Сын/Дочь: %s", bigFamily.get(indexH).getChildren().get(i).getName()));
+            }
+        }else if(bigFamily.get(indexH).getChildren().size() == 0){
+            System.out.println("Дети: не определенны");
+        }
+        if (bigFamily.get(indexH).getBrothersAndSisters().size() > 0){
+            for (int i = 0; i < bigFamily.get(indexH).getBrothersAndSisters().size(); i++) {
+                System.out.println(String.format("Брат/Сестра: %s", bigFamily.get(indexH).getBrothersAndSisters().get(i).getName()));
+            }
+
+            System.out.println("\n\n");
+        } else if (bigFamily.get(indexH).getBrothersAndSisters().size() == 0){
+            System.out.println("Братья/Сестры: не определенны");
+            System.out.println();
+        }
+    }
+
+
     @Override
-    public Iterator<Human> iterator() {
-        return new HumanIterator(bigFamily);
+    public Iterator<T> iterator() {
+        return  new HumanIterator<>(bigFamily);
     }
 }
 
