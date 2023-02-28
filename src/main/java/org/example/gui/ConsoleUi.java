@@ -25,17 +25,22 @@ public class ConsoleUi implements View{
     @Override
     public void start(){
         boolean flag = false;
-        while (!flag){
-            if (navigationMenu.equals("0")){
-                print(menu.getMainMenu());
-            }
-            String input = scanner.nextLine();
-            menu.mainMenu(input, navigationMenu);
-            if (input.equals("5") && navigationMenu.equals("0")){
-                flag = true;
-            }
+            while (!flag) {
+                try {
+                    if (navigationMenu.equals("0")) {
+                        print(menu.getMainMenu());
+                    }
+                    String input = scanner.nextLine();
+                    menu.mainMenu(input, navigationMenu);
+                    if (input.equals("5") && navigationMenu.equals("0")) {
+                        flag = true;
+                    }
+                }catch (Exception exception){
+                    print("error..");
+                    navigationMenu = "0";
         }
-    }
+        }
+        }
 
 
     @Override
