@@ -99,7 +99,7 @@ public class SystemModelCommunication implements Service{
         string.append(", ");
 
         if (bigFamily.get(indexH).getDateOfDeath() == null) {
-            string.append("");
+            string.append(" ");
         } else {
             string.append(String.format("Дата смерти: %s, ", bigFamily.get(indexH).getDateOfDeath()));
         }

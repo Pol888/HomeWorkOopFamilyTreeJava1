@@ -9,15 +9,13 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class Presenter {
-    private final View view;
     private final Service service;
 
 
 
     public Presenter(View view, Service sc) {
         this.service = sc;
-        this.view = view;
-        this.view.setPresenter(this);
+        view.setPresenter(this);
     }
 
     public ArrayList<Map<String,String>> getPrintList(){
@@ -25,26 +23,17 @@ public class Presenter {
     }
 
     public ArrayList<Map<String,String>> setCommandFromView(String command, String text, Integer index){
-        if (command.equals("addH")) {
-            service.addHuman(text);
-        } else if (command.equals("EditingName")) {
-            service.setNameHuman(text, index);
-        } else if (command.equals("gender")){
-            service.setGenderHuman(text, index);
-        } else if (command.equals("dateB")) {
-            service.setDateBirth(text, index);
-        } else if (command.equals("dateD")) {
-            service.setDateDeath(text, index);
-        } else if (command.equals("mother")){
-            service.setMother(Integer.parseInt(text) - 1, index);
-        } else if (command.equals("father")){
-            service.setFather(Integer.parseInt(text) - 1, index);
-        } else if (command.equals("children")){
-            service.setChildren(Integer.parseInt(text) - 1, index);
-        } else if (command.equals("brothersAndSisters")){
-            service.setBrothersAndSisters(Integer.parseInt(text) - 1, index);
-        } else if (command.equals("remove")) {
-            service.removeHuman(index);
+        switch (command) {
+            case "addH" -> service.addHuman(text);
+            case "EditingName" -> service.setNameHuman(text, index);
+            case "gender" -> service.setGenderHuman(text, index);
+            case "dateB" -> service.setDateBirth(text, index);
+            case "dateD" -> service.setDateDeath(text, index);
+            case "mother" -> service.setMother(Integer.parseInt(text) - 1, index);
+            case "father" -> service.setFather(Integer.parseInt(text) - 1, index);
+            case "children" -> service.setChildren(Integer.parseInt(text) - 1, index);
+            case "brothersAndSisters" -> service.setBrothersAndSisters(Integer.parseInt(text) - 1, index);
+            case "remove" -> service.removeHuman(index);
         }
         return null;
     }

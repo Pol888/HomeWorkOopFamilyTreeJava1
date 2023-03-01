@@ -11,7 +11,7 @@ public class RemoveHumanMainButton extends SButton implements PrintList{
     {
         text = "Удалить человека из списка";
     }
-    private ConsoleUI consoleUI;
+    private final ConsoleUI consoleUI;
 
     public RemoveHumanMainButton(ConsoleUI consoleUI) {
         this.consoleUI = consoleUI;

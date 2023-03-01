@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class MainMenu extends SMenu {
 
-    private ConsoleUI consoleUI;
+    private final ConsoleUI consoleUI;
     private final ArrayList <SButton> buttons = new ArrayList <>();
 
     public MainMenu(ConsoleUI consoleUI) {
