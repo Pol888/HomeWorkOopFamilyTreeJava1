@@ -1,16 +1,13 @@
 package org.example.model;
 
+import org.example.model.id.IdHuman;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class Human {
 
-    static Integer counter;
-    static {
-        counter = 1;
-    }
     private final String id;
     //-----------------------------
 
@@ -32,36 +29,25 @@ public class Human {
 
     }
 
-    public Human(String name, Gender gender, LocalDate dateOfBirth, LocalDate dateOfDeath, String id, Tree tree) {
+
+
+
+    public Human(String name, Gender gender, LocalDate dateOfBirth, LocalDate dateOfDeath, String id, Tree<Human> tree) {
         this.name = name;
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
         this.dateOfDeath = dateOfDeath;
-        if (id.equals("")){
-            while (true) {
-                boolean flag = false;
-                for (int i = 0; i < tree.getExistingIds().size(); i++) {
-                    if (Integer.parseInt(new ArrayList<>(Arrays.asList(((String)(tree.getExistingIds().get(i))).split(":")) ).get(1)) == counter) {
-                        flag = true;
-                    }
-                }
-                if (flag) {
-                    counter++;
-                } else {
-                    this.id = "id:" + counter;
-                    counter = 1;
-                    break;
-                }
-            }
-        } else {
-            this.id = id;
-        }
+        this.id = new IdHuman(tree, id).creatorId();
+
     }
 
-    public Human(String name, Tree tree){
+
+    public Human(String name, Tree<Human> tree){
         this(name, null, LocalDate.now(), null, "", tree);
     }
     //---------------------------------------------------------
+
+
 
     public String getId() {
         return id;

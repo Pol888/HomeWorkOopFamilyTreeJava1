@@ -5,18 +5,92 @@ import org.example.model.Human;
 import org.example.model.Tree;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-public class SystemModelCommunication {
+public class SystemModelCommunication implements Service{
     private final Tree <Human> tree;
 
 
     public SystemModelCommunication(Tree<Human> tree) {
         this.tree = tree;
     }
+
+
+
+    @Override
+    public ArrayList<Map<String, String>> getAListPrintHuman(){
+        ArrayList <Map<String, String>> printHuman = new ArrayList<>();
+        for (int i = 0; i < tree.getBigFamily().size(); i++) {
+            printHuman.add(new LinkedHashMap<>(Map.of(tree.getBigFamily().get(i).getName(), superPrintHumanHC(tree.getBigFamily(), i))));
+        }
+    return printHuman;
+    }
+
+    @Override
+    public void addHuman(String name){
+        Human human = new Human(name, this.tree);
+        tree.addHuman(human);
+    }
+    @Override
+    public void setNameHuman(String name, Integer index){
+        tree.getBigFamily().get(index).setName(name);
+    }
+
+    @Override
+    public void  setGenderHuman(String gender, Integer integer){
+        if (gender.equals("1")){
+            tree.getBigFamily().get(integer).setGender(Gender.male);
+        } else {
+            tree.getBigFamily().get(integer).setGender(Gender.female);
+        }
+    }
+    @Override
+    public void setDateBirth(String date, Integer index){
+        ArrayList<String> dateL = new ArrayList<>(Arrays.asList(date.split(" ")));
+        tree.getBigFamily().get(index).setDateOfBirth(LocalDate.of(Integer.parseInt(dateL.get(2)),
+                Integer.parseInt(dateL.get(1)), Integer.parseInt(dateL.get(0))));
+    }
+    @Override
+    public void setDateDeath(String date, Integer index){
+        ArrayList<String> dateL = new ArrayList<>(Arrays.asList(date.split(" ")));
+        tree.getBigFamily().get(index).setDateOfDeath(LocalDate.of(Integer.parseInt(dateL.get(2)),
+                Integer.parseInt(dateL.get(1)), Integer.parseInt(dateL.get(0))));
+    }
+
+    @Override
+    public void setMother(Integer indexMother, Integer indexChildren){
+        tree.getBigFamily().get(indexChildren).setMother(tree.getBigFamily().get(indexMother));
+        tree.getBigFamily().get(indexMother).setChildren(tree.getBigFamily().get(indexChildren));
+    }
+
+    @Override
+    public void setFather(Integer indexFather, Integer indexChildren){
+        tree.getBigFamily().get(indexChildren).setFather(tree.getBigFamily().get(indexFather));
+        tree.getBigFamily().get(indexFather).setChildren(tree.getBigFamily().get(indexChildren));
+    }
+
+    @Override
+    public void setChildren(Integer indexChildren, Integer indexHuman) {
+        tree.getBigFamily().get(indexHuman).setChildren(tree.getBigFamily().get(indexChildren));
+        if (tree.getBigFamily().get(indexHuman).getGender().equals(Gender.male)){
+            tree.getBigFamily().get(indexChildren).setFather(tree.getBigFamily().get(indexHuman));
+        }else {
+            tree.getBigFamily().get(indexChildren).setMother(tree.getBigFamily().get(indexHuman));
+        }
+    }
+
+    @Override
+    public void setBrothersAndSisters(Integer broAndSis, Integer indexHuman) {
+        tree.getBigFamily().get(indexHuman).setBrothersAndSisters(tree.getBigFamily().get(broAndSis));
+        tree.getBigFamily().get(broAndSis).setBrothersAndSisters(tree.getBigFamily().get(indexHuman));
+    }
+
+    @Override
+    public void removeHuman(Integer index) {
+        tree.getBigFamily().remove(((int)(index)));
+    }
+
+
 
     public  String superPrintHumanHC(ArrayList<Human> bigFamily, int indexH) {  // Создание строки для печати
         StringBuilder string = new StringBuilder(String.format("Ф.И.О.: %s, Пол: %s, Дата рождения: %s", bigFamily.get(indexH).getName(),
@@ -56,70 +130,6 @@ public class SystemModelCommunication {
         } else if (bigFamily.get(indexH).getBrothersAndSisters().size() == 0){
             string.append("Братья/Сестры: не определенны\n\n");
         }
-    return string.toString();
-    }
-
-    public ArrayList<Map<String, String>> getAListPrintHuman(){
-        ArrayList <Map<String, String>> printHuman = new ArrayList<>();
-        for (int i = 0; i < tree.getBigFamily().size(); i++) {
-            printHuman.add(new HashMap<>(Map.of(tree.getBigFamily().get(i).getName(), superPrintHumanHC(tree.getBigFamily(), i))));
-        }
-    return printHuman;
-    }
-
-    public void addHuman(String name){
-        Human human = new Human(name, this.tree);
-        tree.addHuman(human);
-    }
-
-    public void setNameHuman(String name, Integer index){
-        tree.getBigFamily().get(index).setName(name);
-    }
-    public void  setGenderHuman(String gender, Integer integer){
-        if (gender.equals("1")){
-            tree.getBigFamily().get(integer).setGender(Gender.male);
-        } else {
-            tree.getBigFamily().get(integer).setGender(Gender.female);
-        }
-    }
-
-    public void setDateBirth(String date, Integer index){
-        ArrayList<String> dateL = new ArrayList<>(Arrays.asList(date.split(" ")));
-        tree.getBigFamily().get(index).setDateOfBirth(LocalDate.of(Integer.parseInt(dateL.get(2)),
-                Integer.parseInt(dateL.get(1)), Integer.parseInt(dateL.get(0))));
-    }
-
-    public void setDateDeath(String date, Integer index){
-        ArrayList<String> dateL = new ArrayList<>(Arrays.asList(date.split(" ")));
-        tree.getBigFamily().get(index).setDateOfDeath(LocalDate.of(Integer.parseInt(dateL.get(2)),
-                Integer.parseInt(dateL.get(1)), Integer.parseInt(dateL.get(0))));
-    }
-
-    public void setMother(Integer indexMother, Integer indexChildren){
-        tree.getBigFamily().get(indexChildren).setMother(tree.getBigFamily().get(indexMother));
-        tree.getBigFamily().get(indexMother).setChildren(tree.getBigFamily().get(indexChildren));
-    }
-
-    public void setFather(Integer indexFather, Integer indexChildren){
-        tree.getBigFamily().get(indexChildren).setFather(tree.getBigFamily().get(indexFather));
-        tree.getBigFamily().get(indexFather).setChildren(tree.getBigFamily().get(indexChildren));
-    }
-
-    public void setChildren(Integer indexChildren, Integer indexHuman) {
-        tree.getBigFamily().get(indexHuman).setChildren(tree.getBigFamily().get(indexChildren));
-        if (tree.getBigFamily().get(indexHuman).getGender().equals(Gender.male)){
-            tree.getBigFamily().get(indexChildren).setFather(tree.getBigFamily().get(indexHuman));
-        }else {
-            tree.getBigFamily().get(indexChildren).setMother(tree.getBigFamily().get(indexHuman));
-        }
-    }
-
-    public void setBrothersAndSisters(Integer broAndSis, Integer indexHuman) {
-        tree.getBigFamily().get(indexHuman).setBrothersAndSisters(tree.getBigFamily().get(broAndSis));
-        tree.getBigFamily().get(broAndSis).setBrothersAndSisters(tree.getBigFamily().get(indexHuman));
-    }
-
-    public void removeHuman(Integer index) {
-        tree.getBigFamily().remove(((int)(index)));
+        return string.toString();
     }
 }
