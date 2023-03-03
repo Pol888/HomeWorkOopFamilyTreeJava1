@@ -1,6 +1,6 @@
 package org.example.model;
 
-import org.example.model.id.IdHuman;
+import org.example.model.id.CreatorIDHuman;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class Human {
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
         this.dateOfDeath = dateOfDeath;
-        this.id = new IdHuman(tree, id).creatorId();
+        this.id = new CreatorIDHuman(tree, id).creatorId();
     }
     public Human(String name, Tree<Human> tree){
         this(name, null, LocalDate.now(), null, "", tree);
